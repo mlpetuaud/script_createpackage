@@ -1,0 +1,91 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import os
+import sys
+import stat
+
+
+def create_architecture(): 
+    os.system(f"mkdir {project_name}")
+    os.system(f"mkdir {project_name}/pkg_{project_name}")
+    os.system(f"touch {project_name}/pkg_{project_name}/__init__.py")
+    os.system(f"touch {project_name}/pkg_{project_name}/get_data.py")
+    os.system(f"touch {project_name}/pkg_{project_name}/model.py")
+    os.system(f"touch {project_name}/pkg_{project_name}/pipeline.py")
+    os.system(f"touch {project_name}/pkg_{project_name}/preprocessing.py")
+    os.system(f"touch {project_name}/README.md")
+    os.system(f"touch {project_name}/Makefile")
+    os.system(f"touch {project_name}/requirements.txt")
+    os.system(f"touch {project_name}/setup.py")
+    os.system(f"mkdir {project_name}/api")
+    os.system(f"touch {project_name}/api/fast.py")
+    os.system(f"mkdir {project_name}/notebooks")
+    os.system(f"mkdir {project_name}/scripts")
+    os.system(f"touch {project_name}/scripts/run_{project_name}")
+
+# write on a file :
+    # 2 params : file_path // what I want to write
+    # open file ==> get file path, then open it
+    # write on it
+    # save changes
+    # close file
+
+project_name = sys.argv[1]
+file_content = "jhlsqbjd"
+file_path = f"{project_name}/pkg_{project_name}/get_data.py"
+
+# setup
+# Makefile (remplira le requirements)
+file_content = {
+      "requirements":
+    {
+        "file_path": f"{project_name}/requirements.txt", # pwd ?
+        "file_text": "pandas \nseaborn"
+    },
+
+    "setup":
+    {
+        "file_path": f"{project_name}/setup.py",#pwd ?
+        "file_text": f"""from setuptools import _install_setup_requires, setup, find_packages
+
+with open('requirements.txt') as file:
+    content = file.readlines()
+    requirements = [x.strip() for x in content]
+
+setup(
+    name='{project_name}_pkg',
+    version='0.0.1',
+    packages=find_packages(
+        where='{project_name}',
+        include=['*pkg*'],
+    ),
+    scripts=['scripts/create_pkg'],
+    requirements=requirements
+)"""
+    },
+
+ "make_file":
+    {
+        "file_path": f"{project_name}/Makefile", 
+        "file_text": 
+"""test:
+\t@coverage run -m pytest test/*.py
+install_requirements:
+\t@pip install -r requirements.txt"""
+    },
+    
+}
+
+def write_to_file():
+    for file in file_content:
+        os.chmod(file_content[file]["file_path"] ,stat.S_IRWXU)
+        with open(file_content[file]["file_path"], "w") as current_file:
+            current_file.write(file_content[file]["file_text"])
+    
+
+
+    
+create_architecture()
+write_to_file()
+
