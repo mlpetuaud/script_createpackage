@@ -32,7 +32,6 @@ def create_architecture():
     # close file
 
 project_name = sys.argv[1]
-file_content = "jhlsqbjd"
 file_path = f"{project_name}/pkg_{project_name}/get_data.py"
 
 # setup
