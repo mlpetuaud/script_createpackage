@@ -7,8 +7,8 @@ import stat
 
 
 def create_architecture(): 
-    os.system(f"mkdir {project_name}")
-    os.system(f"mkdir {project_name}/pkg_{project_name}")
+    os.mkdir(f"{project_name}")
+    os.mkdir(f"{project_name}/pkg_{project_name}")
     os.system(f"touch {project_name}/pkg_{project_name}/__init__.py")
     os.system(f"touch {project_name}/pkg_{project_name}/get_data.py")
     os.system(f"touch {project_name}/pkg_{project_name}/model.py")
@@ -18,34 +18,36 @@ def create_architecture():
     os.system(f"touch {project_name}/Makefile")
     os.system(f"touch {project_name}/requirements.txt")
     os.system(f"touch {project_name}/setup.py")
-    os.system(f"mkdir {project_name}/api")
+    os.mkdir(f"{project_name}/api")
     os.system(f"touch {project_name}/api/fast.py")
-    os.system(f"mkdir {project_name}/notebooks")
-    os.system(f"mkdir {project_name}/scripts")
+    os.mkdir(f"{project_name}/notebooks")
+    os.system(f"touch {project_name}/notebooks/{project_name}.ipynb")
+    os.mkdir(f"{project_name}/scripts")
     os.system(f"touch {project_name}/scripts/run_{project_name}")
 
-# write on a file :
-    # 2 params : file_path // what I want to write
-    # open file ==> get file path, then open it
-    # write on it
-    # save changes
-    # close file
-
 project_name = sys.argv[1]
-file_path = f"{project_name}/pkg_{project_name}/get_data.py"
 
 # setup
 # Makefile (remplira le requirements)
 file_content = {
-      "requirements":
+    "fast" : 
     {
-        "file_path": f"{project_name}/requirements.txt", # pwd ?
-        "file_text": "pandas \nseaborn"
+        "file_path": f"{project_name}/api/fast.py", 
+        "file_text": """from fastapi import FastAPI                    
+app = FastAPI()
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}"""
+    },
+    "requirements":
+    {
+        "file_path": f"{project_name}/requirements.txt", 
+        "file_text": "fastapi \nnumpy \nuvicorn \npandas \nsklearn"
     },
 
     "setup":
     {
-        "file_path": f"{project_name}/setup.py",#pwd ?
+        "file_path": f"{project_name}/setup.py",
         "file_text": f"""from setuptools import _install_setup_requires, setup, find_packages
 
 with open('requirements.txt') as file:
@@ -64,7 +66,7 @@ setup(
 )"""
     },
 
- "make_file":
+    "make_file":
     {
         "file_path": f"{project_name}/Makefile", 
         "file_text": 
@@ -73,7 +75,6 @@ setup(
 install_requirements:
 \t@pip install -r requirements.txt"""
     },
-    
 }
 
 def write_to_file():
@@ -81,9 +82,6 @@ def write_to_file():
         os.chmod(file_content[file]["file_path"] ,stat.S_IRWXU)
         with open(file_content[file]["file_path"], "w") as current_file:
             current_file.write(file_content[file]["file_text"])
-    
-
-
     
 create_architecture()
 write_to_file()
