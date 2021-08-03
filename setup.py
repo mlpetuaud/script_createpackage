@@ -4,5 +4,5 @@ setup(
     name='create_pkg',
     version='0.0.1',
     packages=['create_pkg'],
-    scripts=["scripts/create_pkg"],
+    scripts=["scripts/create_pkg"]
 )

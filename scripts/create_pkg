@@ -39,7 +39,13 @@ app = FastAPI()
 async def root():
     return {"message": "Hello World"}"""
     },
-   
+    
+    "run_script":
+    {
+        "file_path": f"{project_name}/scripts/run_{project_name}",
+        "file_text":"""#!/usr/bin/env python \n# -*- coding: utf-8 -*-"""
+    },
+    
     "requirements":
     {
         "file_path": f"{project_name}/requirements.txt", 
@@ -62,7 +68,7 @@ setup(
         where='{project_name}',
         include=['*pkg*'],
     ),
-    scripts=['scripts/create_pkg'],
+    scripts=['scripts/run_{project_name}'],
     requirements=requirements
 )"""
     },
