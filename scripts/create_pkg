@@ -39,6 +39,7 @@ app = FastAPI()
 async def root():
     return {"message": "Hello World"}"""
     },
+   
     "requirements":
     {
         "file_path": f"{project_name}/requirements.txt", 
